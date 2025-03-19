@@ -1,155 +1,162 @@
-<script setup>
-import { ref, onMounted } from "vue";
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
-const firstText = ref(null);
-const secondText = ref(null);
-const slider = ref(null);
-
-const textContent = ref("there");
-const texts = ["there", "I'm Dady Bima"];
-
-const typewriterText = ref(null);
-const cursor = ref(null);
-
-let currentIndex = 0;
-let xPercent = 0;
-let direction = -1;
-
-// animated typing
-const animateTyping = () => {
-  gsap.fromTo(
-    typewriterText.value,
-    { width: "0px" },
-    {
-      width: "auto",
-      duration: 0.5,
-      ease: "steps(20)",
-      onComplete: () => {
-        setTimeout(() => {
-          gsap.to(typewriterText.value, {
-            width: "0px",
-            duration: 0.8,
-            ease: "steps(15)",
-            onComplete: () => {
-              currentIndex = (currentIndex + 1) % texts.length;
-              textContent.value = texts[currentIndex];
-              animateTyping();
-            },
-          });
-        }, 2000);
-      },
-    }
-  );
-};
-
-// animated marquee
-const animate = () => {
-  if (xPercent < -100) {
-    xPercent = 0;
-  } else if (xPercent > 0) {
-    xPercent = -100;
-  }
-  gsap.set(firstText.value, { xPercent });
-  gsap.set(secondText.value, { xPercent });
-  requestAnimationFrame(animate);
-  xPercent += 0.08 * direction;
-};
-
-onMounted(() => {
-  gsap.registerPlugin(ScrollTrigger);
-  animateTyping();
-
-  gsap.to(cursor.value, {
-    opacity: 0,
-    repeat: -1,
-    yoyo: true,
-    duration: 0.5,
-    ease: "power1.inOut",
-  });
-
-  gsap.to(typewriterText.value, {
-    borderRightColor: "transparent",
-    repeat: -1,
-    yoyo: true,
-    duration: 0.5,
-    ease: "power1.inOut",
-  });
-
-  // Animasi Marquee
-  gsap.to(slider.value, {
-    scrollTrigger: {
-      trigger: document.documentElement,
-      scrub: 0.25,
-      start: 0,
-      end: window.innerHeight,
-      onUpdate: (e) => {
-        direction = e.direction * -1;
-      },
-    },
-    x: "-500px",
-  });
-  requestAnimationFrame(animate);
-});
-</script>
-
 <template>
-  <div id="home" class="min-h-screen bg-black p-24">
-    <div
-      class="flex flex-col items-center justify-between border-2 border-gray-700 rounded-xl h-[760px] w-full"
-    >
-      <!-- Header -->
-      <div
-        class="wrapper-header pattern-stripes rounded-t-[10px] text-[#dedede] px-10 w-full h-[520px] flex items-center justify-center text-2xl relative"
-      >
-        <div class="typewriter wrapper w-full relative z-10">
-          <div
-            class="font-bold text-[5.6em] uppercase tracking-wider flex items-center mx-auto"
-          >
-            hi!,&nbsp;
-            <span
-              ref="typewriterText"
-              class="border-r-[5px] border-white whitespace-nowrap overflow-hidden inline-block"
-            >
-              {{ textContent }}
-            </span>
-            <span ref="cursor" class="">&nbsp;</span>
-          </div>
-          <p class="font-bold text-[5.6em] uppercase tracking-wider">
-            welcome to my page
-          </p>
-        </div>
-        <div
-          class="absolute z-0 h-full w-full bg-[repeating-linear-gradient(45deg,_#333_0px,_#666_10px,_transparent_45px,_transparent_30px)] rounded-t-[10px]"
-        ></div>
-      </div>
+  <div class="min-h-screen bg-black text-white flex flex-col justify-center relative overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <div class="absolute top-20 left-10 w-60 h-60 bg-blue-500/10 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+    </div>
 
-      <!-- Footer dengan Marquee -->
-      <div
-        class="wrapper-footer flex items-center justify-center w-full border-t border-gray-700 h-[250px] overflow-hidden relative"
-      >
-        <div class="absolute top-[calc(40vh-350px)]">
-          <div ref="slider" class="relative whitespace-nowrap font-semibold">
-            <p ref="firstText" class="relative m-0 text-[#dadada] text-[8em]">
-              Web Developer - React Js - Next Js - Vue Js - Nuxt Js - Laravel -
-            </p>
-            <p
-              ref="secondText"
-              class="absolute left-full top-0 m-0 text-[#dadada] text-[8em]"
-            >
-               Web Developer - React Js - Next Js - Vue Js - Nuxt Js - Laravel
-              -
-            </p>
-          </div>
-        </div>
+    <div class="marquee-container py-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 mb-12 relative z-10">
+      <div class="marquee-content">
+        <span v-for="i in 10" :key="i" class="mx-4">✨ Welcome to my creative portfolio ✨</span>
       </div>
     </div>
+
+    <div class="container mx-auto px-4 text-center relative z-10">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">
+        <span class="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+          Hi there!
+        </span>
+      </h1>
+
+      <div class="h-16 md:h-20 flex items-center justify-center mb-8">
+        <h2 class="text-2xl md:text-4xl font-medium">
+          <span>I'm a </span>
+          <span class="typing-text">{{ displayText }}</span>
+          <span class="typing-cursor">|</span>
+        </h2>
+      </div>
+
+      <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+        Bringing your digital ideas to life with creative design and cutting-edge technology.
+        Let's build something amazing together.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-md font-medium transition-colors">
+          Explore My Work
+        </button>
+        <button class="px-8 py-3 border border-white/20 hover:bg-white/10 rounded-md font-medium transition-colors">
+          Contact Me
+        </button>
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+
+    <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+    <div class="absolute top-1/3 right-1/4 w-3 h-3 bg-purple-400 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/3 w-2 h-2 bg-blue-400 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+    <div class="absolute top-2/3 right-1/3 w-3 h-3 bg-purple-400 rounded-full animate-pulse" style="animation-delay: 1.5s;"></div>
   </div>
 </template>
 
-<style scoped></style>
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+const textOptions = [
+  'Web Developer',
+  'Creative Thinker',
+  'Problem Solver',
+  'Lifelong Learner',
+  'Tech Enthusiast',
+  'Open Source Enthusiast'
+]
+
+const displayText = ref('')
+const currentTextIndex = ref(0)
+const currentCharIndex = ref(0)
+const isDeleting = ref(false)
+const typingSpeed = ref(100)
+let typingTimer = null
+
+const typeText = () => {
+  const currentText = textOptions[currentTextIndex.value]
+
+  if (isDeleting.value) {
+    displayText.value = currentText.substring(0, currentCharIndex.value - 1)
+    currentCharIndex.value--
+    typingSpeed.value = 50
+  } else {
+    displayText.value = currentText.substring(0, currentCharIndex.value + 1)
+    currentCharIndex.value++
+    typingSpeed.value = 100
+  }
+
+  if (!isDeleting.value && currentCharIndex.value === currentText.length) {
+    isDeleting.value = true
+    typingSpeed.value = 1000
+  } else if (isDeleting.value && currentCharIndex.value === 0) {
+    isDeleting.value = false
+    currentTextIndex.value = (currentTextIndex.value + 1) % textOptions.length
+    typingSpeed.value = 500
+  }
+
+  typingTimer = setTimeout(typeText, typingSpeed.value)
+}
+
+onMounted(() => {
+  typingTimer = setTimeout(typeText, 1000)
+})
+
+onBeforeUnmount(() => {
+  if (typingTimer) {
+    clearTimeout(typingTimer)
+  }
+})
+</script>
+
+<style scoped>
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.typing-cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 3s ease-in-out infinite;
+}
+</style>
