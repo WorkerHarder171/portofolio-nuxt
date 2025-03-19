@@ -1,12 +1,18 @@
 <template>
   <div
-  id="about"
-    class="min-h-screen flex flex-col items-center justify-center bg-black p-24"
+    id="about"
+    class="min-h-screen flex flex-col items-center justify-center gap-5 bg-black p-14"
   >
-    <div class="flex items-center justify-center container mx-auto">
-      <div class="w-6/12 mx-auto">
+    <div
+      class="flex items-center justify-center container mx-auto border border-gray-700 rounded-[10px]"
+    >
+      <div class="w-6/12 mx-auto border border-gray-700 p-5">
         <div
-          class="w-98 mx-auto h-auto border border-white rounded-[10px] p-2.5"
+          class="w-98 card mx-auto h-auto border border-white rounded-[10px] p-2.5 bg-black"
+          style="box-shadow:  0  0 30px 1px rgba(255, 255, 255, 0.5);"
+          @mouseover="handleMouseOver"
+          @mouseleave="handleMouseLeave"
+          :style="cardStyle"
         >
           <img
             class="rounded-[5px]"
@@ -15,7 +21,7 @@
           />
         </div>
       </div>
-      <div class="w-6/12">
+      <div class="w-6/12 border border-gray-700 p-5">
         <div class="wrapper text-white flex flex-col items-start gap-5">
           <!-- desc -->
           <div class="desc text-xl tracking-wider text-white text-justify">
@@ -95,7 +101,6 @@
 <script setup>
 import { ref } from "vue";
 
-// Impor gambar secara langsung agar bisa dikenali oleh Vite
 import htmlLogo from "../../assets/picture/HTML5.svg";
 import cssLogo from "../../assets/picture/CSS3.svg";
 import tailwind from "../../assets/picture/Tailwind CSS.svg";
@@ -118,6 +123,49 @@ import js from "../../assets/picture/JavaScript.svg";
 import mySql from "../../assets/picture/MySQL.svg";
 import Windows from "../../assets/picture/Windows 11.svg";
 import Express from "../../assets/picture/Express.svg";
+import Php from "../../assets/picture/PHP.svg";
+
+const cardStyle = ref({});
+
+const handleMouseOver = (e) => {
+  const card = e.currentTarget;
+  const rect = card.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const updateCardStyle = (event) => {
+    const mouseX = event.clientX - centerX;
+    const mouseY = event.clientY - centerY;
+
+    const rotateX = (mouseY / rect.height) * -30;
+    const rotateY = -(mouseX / rect.width) * -30;
+
+    cardStyle.value = {
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1)`,
+      transition: "transform 0.1s ease",
+    };
+  };
+
+  const stopTracking = () => {
+    cardStyle.value = {
+      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
+      transition: "transform 0.3s ease",
+    };
+    window.removeEventListener("mousemove", updateCardStyle);
+    card.removeEventListener("mouseleave", stopTracking);
+  };
+
+  window.addEventListener("mousemove", updateCardStyle);
+  card.addEventListener("mouseleave", stopTracking);
+};
+
+const handleMouseLeave = () => {
+  cardStyle.value = {
+    transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
+    transition: "transform 0.3s ease",
+  };
+};
+
 
 const menu = ref([
   { id: 1, src: htmlLogo, alt: "HTML", category: "Programming Language" },
@@ -142,5 +190,6 @@ const menu = ref([
   { id: 20, src: mySql, alt: "MySQL", category: "Database" },
   { id: 21, src: Windows, alt: "Windows", category: "Operating System" },
   { id: 22, src: Express, alt: "Express", category: "Framework" },
+  { id: 23, src: Php, alt: "Php", category: "Programming Language" },
 ]);
 </script>

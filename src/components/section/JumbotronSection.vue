@@ -94,9 +94,8 @@ onMounted(() => {
 });
 </script>
 
-
 <template>
-  <div class="min-h-screen bg-black p-24">
+  <div id="home" class="min-h-screen bg-black p-24">
     <div
       class="flex flex-col items-center justify-between border-2 border-gray-700 rounded-xl h-[760px] w-full"
     >
@@ -139,7 +138,8 @@ onMounted(() => {
               ref="secondText"
               class="absolute left-full top-0 m-0 text-[#dadada] text-[8em]"
             >
-              Web Developer - React Js - Next Js - Vue Js - Nuxt Js - Laravel -
+               Web Developer - React Js - Next Js - Vue Js - Nuxt Js - Laravel
+              -
             </p>
           </div>
         </div>
@@ -148,5 +148,4 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
