@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { useGsap } from "#gsap";
 
-gsap.registerPlugin(ScrollTrigger);
+const gsap = useGsap();
+
 
 const firstText = ref(null);
 const secondText = ref(null);

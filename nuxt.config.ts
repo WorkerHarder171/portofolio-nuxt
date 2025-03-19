@@ -26,7 +26,9 @@ export default defineNuxtConfig({
     extraPlugins: {
       scrollTrigger: true,
     },
+  autoImport: true,
   },
+
   runtimeConfig: {
     public: {
       motion: {

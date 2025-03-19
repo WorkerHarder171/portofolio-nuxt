@@ -139,10 +139,10 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import axios from "axios";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { useGsap } from "#gsap";
 
-gsap.registerPlugin(ScrollTrigger);
+const gsap = useGsap();
+
 
 const data = ref([]);
 const projectCards = ref([]);
