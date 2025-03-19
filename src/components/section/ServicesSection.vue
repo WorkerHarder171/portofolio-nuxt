@@ -1,6 +1,6 @@
 <template>
   <div
-  id="services"
+    id="services"
     class="horizontal flex overflow-x-hidden min-h-screen bg-black text-white"
   >
     <!-- Hero Section -->
@@ -36,10 +36,10 @@
 
     <!-- Portfolio Section with Large Cards -->
     <section
-      v-for="project in projects"
-      :key="project.id"
+      v-for="(project, index) in data"
+      :key="index"
       ref="projectCards"
-      class="content container mx-auto px-4 py-16 min-h-screen min-w-screen flex items-center"
+      class="content container mx-auto px-4 py-16 min-w-screen min-h-screen flex items-center"
     >
       <div class="container mx-auto">
         <div
@@ -49,57 +49,56 @@
             <!-- Project Image -->
             <div class="relative h-[300px] lg:h-[500px] overflow-hidden">
               <img
-                :src="project.image"
-                :alt="project.title"
+                v-if="project.img"
+                :src="project.img"
+                :alt="project.title || 'Project Image'"
                 class="w-full h-full object-cover"
               />
+
+              <div
+                v-else
+                class="flex items-center justify-center w-full h-full bg-gray-800 text-white"
+              >
+                No Image Available
+              </div>
             </div>
 
             <!-- Project Details -->
             <div class="p-8 flex flex-col justify-center">
-
-              <div class="p-8 flex flex-col justify-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                  {{ project.title }}
-                </h2>
-
-                <p class="text-gray-300 text-lg mb-6">
-                  {{ project.description }}
-                </p>
-
-                <div class="mb-8">
-                  <h3 class="text-xl font-semibold mb-3">Technologies Used:</h3>
-                  <div class="flex flex-wrap gap-3">
-                    <span
-                      v-for="framework in project.frameworks"
-                      :key="framework"
-                      class="px-4 py-2 bg-gray-800 rounded-full text-sm font-medium"
-                    >
-                      {{ framework }}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  class="w-fit px-4 py-2 border border-white/20 rounded-md hover:bg-white/10 flex items-center group"
-                >
-                  View Project Details
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+              <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                {{ project.title }}
+              </h2>
+              <p class="text-gray-300 text-lg mb-6">{{ project.desc }}</p>
+              <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-3">Technologies Used:</h3>
+                <div class="flex flex-wrap gap-3">
+                  <span
+                    v-if="project.framework"
+                    class="px-4 py-2 bg-gray-800 rounded-full text-sm font-medium"
                   >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                </button>
+                    {{ project.framework }}
+                  </span>
+                </div>
               </div>
+              <button
+                class="w-fit px-4 py-2 border border-white/20 rounded-md hover:bg-white/10 flex items-center group"
+              >
+                View Project Details
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -107,7 +106,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="content bg-black min-w-screen min-h-screen px-4 py-20 ">
+    <section class="content bg-black min-w-screen min-h-screen px-4 py-20">
       <div class="mx-auto container">
         <div
           class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 p-12 rounded-2xl text-center border-2 border-gray-700"
@@ -138,98 +137,64 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
+import axios from "axios";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = ref([
-  {
-    id: 1,
-    title: "E-commerce Platform",
-    description:
-      "A comprehensive e-commerce solution with advanced product filtering, user authentication, and a seamless checkout process. This platform was built with performance and scalability in mind, ensuring a smooth shopping experience for customers across all devices.",
-    image:
-      "https://via.placeholder.com/800x600/333/666?text=E-commerce+Platform",
-    frameworks: ["Vue.js", "Nuxt.js", "Tailwind CSS", "Stripe", "MongoDB"],
-  },
-  {
-    id: 2,
-    title: "Corporate Dashboard",
-    description:
-      "An intuitive dashboard for a financial services company that visualizes complex data in an accessible way. The dashboard includes real-time analytics, customizable reports, and role-based access control to ensure data security.",
-    image:
-      "https://via.placeholder.com/800x600/333/666?text=Corporate+Dashboard",
-    frameworks: ["Vue.js", "D3.js", "Express", "PostgreSQL", "Docker"],
-  },
-  {
-    id: 3,
-    title: "Mobile Fitness App",
-    description:
-      "A cross-platform fitness application that helps users track their workouts, set goals, and connect with friends. The app includes features like workout plans, progress tracking, and social sharing to keep users motivated.",
-    image: "https://via.placeholder.com/800x600/333/666?text=Fitness+App",
-    frameworks: ["Vue Native", "Firebase", "Vuex", "Node.js", "GraphQL"],
-  },
-  {
-    id: 4,
-    title: "Educational Platform",
-    description:
-      "An interactive learning platform for students and educators featuring course management, video lectures, quizzes, and progress tracking. The platform supports multiple learning formats and provides detailed analytics for educators.",
-    image:
-      "https://via.placeholder.com/800x600/333/666?text=Educational+Platform",
-    frameworks: ["Vue.js", "TypeScript", "Django", "AWS", "Socket.io"],
-  },
-  {
-    id: 5,
-    title: "Real Estate Marketplace",
-    description:
-      "A comprehensive real estate platform that connects buyers, sellers, and agents. Features include property listings, advanced search filters, virtual tours, and appointment scheduling. The platform uses AI to provide personalized property recommendations.",
-    image:
-      "https://via.placeholder.com/800x600/333/666?text=Real+Estate+Marketplace",
-    frameworks: ["Nuxt.js", "Prisma", "PostgreSQL", "Mapbox", "Vercel"],
-  },
-]);
-
+const data = ref([]);
 const projectCards = ref([]);
 
-onMounted(() => {
+const fetchData = async () => {
+  try {
+    const response = await axios.get("http://127.0.0.1:8000/api/services");
+    data.value = response.data;
+    console.log("Fetched Data:", data.value);
+    await nextTick();
+    animateProjects();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+const animateProjects = () => {
   gsap.to(".horizontal .content", {
-      x: () => -(projectCards.value.length + 1) * window.innerWidth,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".horizontal",
-        pin: true,
-        scrub: 1,
-        end: () => "+=" + document.querySelector(".horizontal").offsetWidth,
-      },
-    });
+    x: () => -(projectCards.value.length + 1) * window.innerWidth,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".horizontal",
+      pin: true,
+      scrub: 1,
+      end: () => "+=" + document.querySelector(".horizontal").offsetWidth,
+    },
+  });
 
-  setTimeout(async () => {
+  projectCards.value.forEach((card, index) => {
+    gsap.fromTo(
+      card,
+      { opacity: 0, x: 100 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        delay: 0.2 * index,
+      }
+    );
+  });
+};
 
-    projectCards.value.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        { x: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-          delay: 0.2 * index,
-        }
-      );
-    });
-  }, 100);
-});
+onMounted(fetchData);
 </script>
 
-<style scope>
+<style scopep>
 .horizontal .content {
   display: grid;
   place-items: center;
