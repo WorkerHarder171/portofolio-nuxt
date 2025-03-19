@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const firstText = ref(null);
 const secondText = ref(null);
 const slider = ref(null);
