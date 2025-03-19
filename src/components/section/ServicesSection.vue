@@ -140,7 +140,7 @@
 import { ref, onMounted, nextTick } from "vue";
 import axios from "axios";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
