@@ -9,9 +9,11 @@
     >
       <div class="container mx-auto">
         <div
+          id="heroServices"
           class="mx-auto flex items-center border border-gray-700 rounded-[10px]"
         >
           <p
+            id="heroServicesDesc"
             class="w-6/12 text-3xl text-white border-r border-gray-700 p-10 text-left leading-[150%] tracking-wide"
           >
             We specialize in transforming ideas into impactful digital
@@ -21,6 +23,7 @@
             extraordinary together.
           </p>
           <p
+            id="heroServicesTitle"
             class="text-6xl w-6/12 capitalize border border-gray-700 text-left leading-[120%] p-10 font-semibold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent"
           >
             empowering your vision, crafting your success
@@ -81,7 +84,7 @@
                 </div>
               </div>
               <button
-                class="w-fit px-4 py-2 border border-white/20 rounded-md hover:bg-white/10 flex items-center group"
+                class="w-fit px-4 py-2 border cursor-pointer border-white/20 rounded-md hover:bg-white/10 flex items-center group"
               >
                 View Project Details
                 <svg
@@ -139,10 +142,10 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import axios from "axios";
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
@@ -201,5 +204,17 @@ onMounted(fetchData);
   display: grid;
   place-items: center;
   flex-shrink: 0;
+}
+
+@media (max-width: 375px) {
+  #heroServices {
+    flex-direction: column-reverse;
+  }
+  #heroServicesTitle {
+    font-size: 2rem;
+  }
+  #heroServicesDesc {
+    font-size: 1.5rem;
+  }
 }
 </style>

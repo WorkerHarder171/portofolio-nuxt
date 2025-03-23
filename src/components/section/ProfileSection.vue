@@ -1,30 +1,38 @@
 <template>
-  <div
+  <motion.div
+
     id="about"
-    class="min-h-screen flex flex-col items-center justify-center gap-5 bg-black p-14"
+    class="min-h-screen flex flex-col items-center justify-center gap-5 bg-black p-4 md:p-14"
   >
     <div
-      class="flex items-center justify-center container mx-auto border border-gray-700 rounded-[10px]"
+      class="flex flex-col md:flex-row items-center justify-center container mx-auto border border-gray-700 rounded-[10px]"
     >
-      <div class="w-6/12 mx-auto border border-gray-700 p-5">
+      <!-- Image Section - Full width on mobile, half width on desktop -->
+      <div class="w-full md:w-6/12 mx-auto border border-gray-700 p-3 md:p-5">
         <div
-          class="w-98 card mx-auto h-auto border border-white rounded-[10px] p-2.5 bg-black"
-          style="box-shadow:  0  0 30px 1px rgba(255, 255, 255, 0.5);"
+          class="w-full max-w-[350px] mx-auto h-auto border border-white rounded-[10px] p-2.5 bg-black"
+          style="box-shadow: 0 0 30px 1px rgba(255, 255, 255, 0.5);"
           @mouseover="handleMouseOver"
+          @touchstart="handleTouchStart"
+          @touchmove="handleTouchMove"
+          @touchend="handleTouchEnd"
           @mouseleave="handleMouseLeave"
           :style="cardStyle"
+          ref="cardRef"
         >
           <img
-            class="rounded-[5px]"
+            class="rounded-[5px] w-full"
             src="../../assets/picture/gunung.jpg"
             alt="Mountain"
           />
         </div>
       </div>
-      <div class="w-6/12 border border-gray-700 p-5">
+
+      <!-- Content Section - Full width on mobile, half width on desktop -->
+      <div class="w-full md:w-6/12 border border-gray-700 p-3 md:p-5">
         <div class="wrapper text-white flex flex-col items-start gap-5">
-          <!-- desc -->
-          <div class="desc text-xl tracking-wider text-white text-justify">
+          <!-- Description -->
+          <div class="desc text-base md:text-xl tracking-wider text-white text-justify">
             Welcome to my personal website. I am a web developer who is
             passionate about creating web applications. I have experience in
             developing web applications using various technologies. I am also a
@@ -32,70 +40,68 @@
             looking for a job as a web developer. If you are interested in
             hiring me, please contact me.
           </div>
-          <!-- tech stack -->
-          <div class="tech-stack">
-            <div class="title text-3xl font-semibold">My Tech Stack</div>
 
-            <!-- list techstack -->
-            <div class="list">
-              <!-- framework -->
-              <p class="title text-xl font-semibold mt-5 mb-3">
-                Framework and Database
-              </p>
-              <div class="grid grid-cols-10 items-center gap-3">
-                <div
-                  v-for="item in menu.filter(
-                    (item) =>
-                      item.category === 'Framework' ||
-                      item.category === 'Database' ||
-                      item.category === 'Library'
-                  )"
-                  :key="item.id"
-                  class="wrapper bg-white rounded-[10px] p-2.5"
-                >
-                  <img class="w-12 h-12" :src="item.src" :alt="item.alt" />
-                </div>
+          <!-- Tech Stack -->
+          <div class="tech-stack w-full">
+            <div class="title text-2xl md:text-3xl font-semibold">My Tech Stack</div>
+
+            <!-- Framework and Database -->
+            <p class="title text-lg md:text-xl font-semibold mt-5 mb-3">
+              Framework and Database
+            </p>
+            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3">
+              <div
+                v-for="item in menu.filter(
+                  (item) =>
+                    item.category === 'Framework' ||
+                    item.category === 'Database' ||
+                    item.category === 'Library'
+                )"
+                :key="item.id"
+                class="wrapper bg-white rounded-[10px] p-1.5 md:p-2.5 flex items-center justify-center"
+              >
+                <img class="w-8 h-8 md:w-12 md:h-12" :src="item.src" :alt="item.alt" />
               </div>
+            </div>
 
-              <!-- programming language -->
-              <p class="title text-xl font-semibold mt-5 mb-3">
-                Programming Language
-              </p>
-              <div class="grid grid-cols-10 items-center gap-3">
-                <div
-                  v-for="item in menu.filter(
-                    (item) => item.category === 'Programming Language'
-                  )"
-                  :key="item.id"
-                  class="wrapper bg-white rounded-[10px] p-2.5"
-                >
-                  <img class="w-12 h-12" :src="item.src" :alt="item.alt" />
-                </div>
+            <!-- Programming Language -->
+            <p class="title text-lg md:text-xl font-semibold mt-5 mb-3">
+              Programming Language
+            </p>
+            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3">
+              <div
+                v-for="item in menu.filter(
+                  (item) => item.category === 'Programming Language'
+                )"
+                :key="item.id"
+                class="wrapper bg-white rounded-[10px] p-1.5 md:p-2.5 flex items-center justify-center"
+              >
+                <img class="w-8 h-8 md:w-12 md:h-12" :src="item.src" :alt="item.alt" />
               </div>
+            </div>
 
-              <!-- operation system -->
-              <p class="title text-xl font-semibold mt-5 mb-3">
-                Operating System or Tools
-              </p>
-              <div class="grid grid-cols-10 items-center gap-3">
-                <div
-                  v-for="item in menu.filter(
-                    (item) =>
-                      item.category === 'Operating System' ||
-                      item.category === 'Tool'
-                  )"
-                  :key="item.id"
-                  class="wrapper bg-white rounded-[10px] p-2.5"
-                >
-                  <img class="w-12 h-12" :src="item.src" :alt="item.alt" />
-                </div>
+            <!-- Operating System or Tools -->
+            <p class="title text-lg md:text-xl font-semibold mt-5 mb-3">
+              Operating System or Tools
+            </p>
+            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3">
+              <div
+                v-for="item in menu.filter(
+                  (item) =>
+                    item.category === 'Operating System' ||
+                    item.category === 'Tool'
+                )"
+                :key="item.id"
+                class="wrapper bg-white rounded-[10px] p-1.5 md:p-2.5 flex items-center justify-center"
+              >
+                <img class="w-8 h-8 md:w-12 md:h-12" :src="item.src" :alt="item.alt" />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </motion.div>
 </template>
 
 <script setup>
@@ -126,6 +132,7 @@ import Express from "../../assets/picture/Express.svg";
 import Php from "../../assets/picture/PHP.svg";
 
 const cardStyle = ref({});
+const cardRef = ref(null);
 
 const handleMouseOver = (e) => {
   const card = e.currentTarget;
@@ -166,6 +173,48 @@ const handleMouseLeave = () => {
   };
 };
 
+// Touch event handlers for mobile devices
+const handleTouchStart = (e) => {
+  if (!cardRef.value) return;
+
+  const touch = e.touches[0];
+
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+
+  // Prevent default to avoid scrolling while interacting with the card
+  e.preventDefault();
+};
+
+const handleTouchMove = (e) => {
+  if (!cardRef.value) return;
+
+  const touch = e.touches[0];
+  const rect = cardRef.value.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const touchX = touch.clientX - centerX;
+  const touchY = touch.clientY - centerY;
+
+  const rotateX = (touchY / rect.height) * -20; // Reduced intensity for mobile
+  const rotateY = -(touchX / rect.width) * -20; // Reduced intensity for mobile
+
+  cardStyle.value = {
+    transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1)`,
+    transition: "transform 0.1s ease",
+  };
+
+  // Prevent default to avoid scrolling while interacting with the card
+  e.preventDefault();
+};
+
+const handleTouchEnd = () => {
+  cardStyle.value = {
+    transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)",
+    transition: "transform 0.5s ease", // Slightly longer transition for touch
+  };
+};
 
 const menu = ref([
   { id: 1, src: htmlLogo, alt: "HTML", category: "Programming Language" },
@@ -193,3 +242,14 @@ const menu = ref([
   { id: 23, src: Php, alt: "Php", category: "Programming Language" },
 ]);
 </script>
+
+<style>
+/* Add any additional styles here */
+@media (max-width: 768px) {
+  #about {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    justify-content: flex-start;
+  }
+}
+</style>
