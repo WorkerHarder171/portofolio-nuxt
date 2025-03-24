@@ -166,7 +166,7 @@ const fetchData = async () => {
     console.log("Fetched Data:", data.value);
     await nextTick();
 
-    if (widthMobile.value > 375) {
+    if (widthMobile.value > 500) {
       animateProjects();
     } else {
       animateProjectsMobile();
@@ -187,7 +187,7 @@ const handleResize = () => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
   // Re-initialize animations based on screen size
-  if (widthMobile.value > 375) {
+  if (widthMobile.value > 500) {
     nextTick(() => animateProjects());
   } else {
     nextTick(() => animateProjectsMobile());
