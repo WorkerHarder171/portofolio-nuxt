@@ -1,6 +1,5 @@
 <template>
   <motion.div
-
     id="about"
     class="min-h-screen flex flex-col items-center justify-center gap-5 bg-black p-4"
   >
@@ -11,7 +10,7 @@
       <div class="w-full md:w-6/12 mx-auto border border-gray-700 p-3 md:p-5">
         <div
           class="w-full max-w-[350px] mx-auto h-auto border border-white rounded-[10px] p-2.5 bg-black"
-          style="box-shadow: 0 0 30px 1px rgba(255, 255, 255, 0.5);"
+          style="box-shadow: 0 0 30px 1px rgba(255, 255, 255, 0.5)"
           @mouseover="handleMouseOver"
           @touchstart="handleTouchStart"
           @touchmove="handleTouchMove"
@@ -26,14 +25,20 @@
             alt="Mountain"
           />
         </div>
-        <p class="text-3xl capitalize text-white font-semibold tracking-wide text-center my-5 p-3 rounded-[10px] border border-gray-700 w-98 mx-auto">hi i'm dady bima</p>
+        <p
+          class="text-3xl capitalize text-white font-semibold tracking-wide text-center my-5 p-3 rounded-[10px] border border-gray-700 w-auto mx-auto"
+        >
+          hi i'm dady bima
+        </p>
       </div>
 
       <!-- Content Section - Full width on mobile, half width on desktop -->
       <div class="w-full md:w-6/12 border border-gray-700 p-3 md:p-5">
         <div class="wrapper text-white flex flex-col items-start gap-5">
           <!-- Description -->
-          <div class="desc text-base md:text-xl tracking-wider text-white text-justify">
+          <div
+            class="desc text-base md:text-xl tracking-wider text-white text-justify"
+          >
             Welcome to my personal website. I am a web developer who is
             passionate about creating web applications. I have experience in
             developing web applications using various technologies. I am also a
@@ -44,13 +49,17 @@
 
           <!-- Tech Stack -->
           <div class="tech-stack w-full">
-            <div class="title text-2xl md:text-3xl font-semibold">My Tech Stack</div>
+            <div class="title text-2xl md:text-3xl font-semibold">
+              My Tech Stack
+            </div>
 
             <!-- Framework and Database -->
             <p class="title text-lg md:text-xl font-semibold mt-5 mb-3">
               Framework and Database
             </p>
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3">
+            <div
+              class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3"
+            >
               <div
                 v-for="item in menu.filter(
                   (item) =>
@@ -61,7 +70,11 @@
                 :key="item.id"
                 class="wrapper bg-white rounded-[10px] p-1.5 md:p-2.5 flex items-center justify-center"
               >
-                <img class="w-8 h-8 md:w-12 md:h-12" :src="item.src" :alt="item.alt" />
+                <img
+                  class="w-8 h-8 md:w-12 md:h-12"
+                  :src="item.src"
+                  :alt="item.alt"
+                />
               </div>
             </div>
 
@@ -69,7 +82,9 @@
             <p class="title text-lg md:text-xl font-semibold mt-5 mb-3">
               Programming Language
             </p>
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3">
+            <div
+              class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3"
+            >
               <div
                 v-for="item in menu.filter(
                   (item) => item.category === 'Programming Language'
@@ -77,7 +92,11 @@
                 :key="item.id"
                 class="wrapper bg-white rounded-[10px] p-1.5 md:p-2.5 flex items-center justify-center"
               >
-                <img class="w-8 h-8 md:w-12 md:h-12" :src="item.src" :alt="item.alt" />
+                <img
+                  class="w-8 h-8 md:w-12 md:h-12"
+                  :src="item.src"
+                  :alt="item.alt"
+                />
               </div>
             </div>
 
@@ -85,7 +104,9 @@
             <p class="title text-lg md:text-xl font-semibold mt-5 mb-3">
               Operating System or Tools
             </p>
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3">
+            <div
+              class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 items-center gap-2 md:gap-3"
+            >
               <div
                 v-for="item in menu.filter(
                   (item) =>
@@ -95,7 +116,11 @@
                 :key="item.id"
                 class="wrapper bg-white rounded-[10px] p-1.5 md:p-2.5 flex items-center justify-center"
               >
-                <img class="w-8 h-8 md:w-12 md:h-12" :src="item.src" :alt="item.alt" />
+                <img
+                  class="w-8 h-8 md:w-12 md:h-12"
+                  :src="item.src"
+                  :alt="item.alt"
+                />
               </div>
             </div>
           </div>
