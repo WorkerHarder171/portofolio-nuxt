@@ -150,43 +150,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
-import axios from "axios";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import data from "./index";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const fetchData = async () => {
-  try {
-    const response = await axios.get("http://127.0.0.1:8000/api/services");
-    data.value = response.data ?? [];
-    console.log("Fetched Data:", data.value);
-    await nextTick();
-
-    if (widthMobile.value > 500) {
-      animateProjects();
-    } else {
-      animateProjectsMobile();
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error.response?.data || error.message);
-  }
-};
-
-const data = ref([]);
+// refs
 const projectCards = ref([]);
 const widthMobile = ref(typeof window !== "undefined" ? window.innerWidth : 0);
 
+// handling resize
 const handleResize = () => {
   widthMobile.value = window.innerWidth;
-
-  // Clear existing ScrollTrigger instances
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-
-  // Re-initialize animations based on screen size
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   if (widthMobile.value > 500) {
     nextTick(() => animateProjects());
   } else {
@@ -194,7 +174,7 @@ const handleResize = () => {
   }
 };
 
-
+// animated desktop
 const animateProjects = () => {
   gsap.to(".horizontal .content", {
     x: () => -(projectCards.value.length + 1) * window.innerWidth,
@@ -203,7 +183,8 @@ const animateProjects = () => {
       trigger: ".horizontal",
       pin: true,
       scrub: 1,
-      end: () => "+=" + (document.querySelector(".horizontal")?.offsetWidth || 0),
+      end: () =>
+        "+=" + (document.querySelector(".horizontal")?.offsetWidth || 0),
     },
   });
 
@@ -227,6 +208,7 @@ const animateProjects = () => {
   });
 };
 
+// animated mobile
 const animateProjectsMobile = () => {
   projectCards.value.forEach((card) => {
     gsap.fromTo(
@@ -247,20 +229,20 @@ const animateProjectsMobile = () => {
   });
 };
 
+// mounting
 onMounted(() => {
-  console.log("Width Mobile:", widthMobile.value);
+  window.addEventListener("resize", handleResize);
+  if (widthMobile.value > 500) {
+    animateProjects();
+  } else {
+    animateProjectsMobile();
+  }
+});
 
-  // Add resize listener
-  window.addEventListener('resize', handleResize);
-
-  // Fetch data and initialize animations
-  fetchData();
-
-  // Clean up
-  return () => {
-    window.removeEventListener('resize', handleResize);
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  };
+// cleanup
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 });
 </script>
 
@@ -316,7 +298,7 @@ onMounted(() => {
     width: 100%;
     font-size: 2rem;
     padding: 1rem;
-    border-bottom: 1px solid #4B5563;
+    border-bottom: 1px solid #4b5563;
     border-right: none;
     border-left: none;
     border-top: none;
