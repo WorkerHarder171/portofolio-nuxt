@@ -245,7 +245,7 @@ onUnmounted(() => {
 .close-menu:hover span:nth-child(2) {
   transform: rotate(-135deg) scale(1.2);
 }
-@media (max-width: 375px) {
+@media (max-width: 500px) {
   .navbar-brand {
     font-size: 1rem;
   }

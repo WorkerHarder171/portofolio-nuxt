@@ -277,7 +277,7 @@ onMounted(() => {
   background-clip: text;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 500px) {
   /* Global structure changes */
   #services {
     display: block;

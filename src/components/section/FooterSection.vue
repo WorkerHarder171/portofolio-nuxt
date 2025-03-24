@@ -128,7 +128,7 @@ const subscribeToNewsletter = () => {
 }
 
 /* Mobile responsive styles */
-@media (max-width: 375px) {
+@media (max-width: 500px) {
   /* Layout changes */
   .grid-cols-4 {
     grid-template-columns: 1fr;

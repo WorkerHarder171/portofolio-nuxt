@@ -292,7 +292,7 @@ const submitForm = () => {
 }
 
 /* Small Mobile Devices */
-@media (max-width: 375px) {
+@media (max-width: 500px) {
   /* Use more specific selectors to prevent conflicts */
   #contact .p-12 {
     padding: 1.25rem;
