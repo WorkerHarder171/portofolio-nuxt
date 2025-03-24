@@ -116,3 +116,115 @@ const subscribeToNewsletter = () => {
 }
 </script>
 
+<style scoped>
+/* Ensure text gradient works */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.text-transparent {
+  color: transparent;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 375px) {
+  /* Layout changes */
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .gap-8 {
+    gap: 1.5rem;
+  }
+
+  .mb-12 {
+    margin-bottom: 2rem;
+  }
+
+  .pt-16 {
+    padding-top: 2.5rem;
+  }
+
+  .pb-8 {
+    padding-bottom: 1.5rem;
+  }
+
+  /* Spacing adjustments */
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.5rem;
+  }
+
+  .pt-2 {
+    padding-top: 0.5rem;
+  }
+
+  .space-y-2 > * + * {
+    margin-top: 0.375rem;
+  }
+
+  .space-y-3 > * + * {
+    margin-top: 0.5rem;
+  }
+
+  /* Typography */
+  .text-lg {
+    font-size: 1rem;
+  }
+
+  .text-xl {
+    font-size: 1.125rem;
+  }
+
+  /* Social media icons */
+  .w-10, .h-10 {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .w-5, .h-5 {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .space-x-4 {
+    gap: 0.75rem;
+  }
+
+  /* Form elements */
+  .px-4 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .py-2 {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+
+  /* Bottom footer */
+  .pt-8 {
+    padding-top: 1.25rem;
+  }
+
+  .flex.justify-between {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .flex.space-x-6 {
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .text-sm {
+    font-size: 0.75rem;
+  }
+}
+</style>

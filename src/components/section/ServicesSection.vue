@@ -5,6 +5,7 @@
   >
     <!-- Hero Section -->
     <section
+      id="hero"
       class="content container relative mx-auto px-4 py-20 md:py-32 min-h-screen min-w-screen w-full flex flex-col justify-center items-center"
     >
       <div class="container mx-auto">
@@ -30,6 +31,7 @@
           </p>
         </div>
         <p
+          id="heroServicesScroll"
           class="flex relative top-40 justify-center w-full text-xl capitalize font-thin italic text-gray-400"
         >
           keep scrolling
@@ -39,6 +41,7 @@
 
     <!-- Portfolio Section with Large Cards -->
     <section
+      id="projects"
       v-for="(project, index) in data"
       :key="index"
       ref="projectCards"
@@ -48,9 +51,12 @@
         <div
           class="bg-gray-900/60 border border-gray-700 rounded-xl overflow-hidden"
         >
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div id="projectCard" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Project Image -->
-            <div class="relative h-[300px] lg:h-[500px] overflow-hidden">
+            <div
+              id="imgCard"
+              class="relative h-[300px] lg:h-[500px] overflow-hidden"
+            >
               <img
                 v-if="project.img"
                 :src="project.img"
@@ -67,12 +73,12 @@
             </div>
 
             <!-- Project Details -->
-            <div class="p-8 flex flex-col justify-center">
+            <div id="detailsCard" class="p-8 flex flex-col justify-center">
               <h2 class="text-3xl md:text-4xl font-bold mb-4">
                 {{ project.title }}
               </h2>
               <p class="text-gray-300 text-lg mb-6">{{ project.desc }}</p>
-              <div class="mb-8">
+              <div class="mb-8 framework">
                 <h3 class="text-xl font-semibold mb-3">Technologies Used:</h3>
                 <div class="flex flex-wrap gap-3">
                   <span
@@ -109,9 +115,13 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="content bg-black min-w-screen min-h-screen px-4 py-20">
+    <section
+      id="cta"
+      class="content bg-black min-w-screen min-h-screen px-4 py-20"
+    >
       <div class="mx-auto container">
         <div
+          id="ctaContent"
           class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 p-12 rounded-2xl text-center border-2 border-gray-700"
         >
           <h2 class="text-3xl md:text-4xl font-bold mb-6">
@@ -149,20 +159,41 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const data = ref([]);
-const projectCards = ref([]);
-
 const fetchData = async () => {
   try {
     const response = await axios.get("http://127.0.0.1:8000/api/services");
-    data.value = response.data;
+    data.value = response.data ?? [];
     console.log("Fetched Data:", data.value);
     await nextTick();
-    animateProjects();
+
+    if (widthMobile.value > 375) {
+      animateProjects();
+    } else {
+      animateProjectsMobile();
+    }
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching data:", error.response?.data || error.message);
   }
 };
+
+const data = ref([]);
+const projectCards = ref([]);
+const widthMobile = ref(typeof window !== "undefined" ? window.innerWidth : 0);
+
+const handleResize = () => {
+  widthMobile.value = window.innerWidth;
+
+  // Clear existing ScrollTrigger instances
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+  // Re-initialize animations based on screen size
+  if (widthMobile.value > 375) {
+    nextTick(() => animateProjects());
+  } else {
+    nextTick(() => animateProjectsMobile());
+  }
+};
+
 
 const animateProjects = () => {
   gsap.to(".horizontal .content", {
@@ -172,7 +203,7 @@ const animateProjects = () => {
       trigger: ".horizontal",
       pin: true,
       scrub: 1,
-      end: () => "+=" + document.querySelector(".horizontal").offsetWidth,
+      end: () => "+=" + (document.querySelector(".horizontal")?.offsetWidth || 0),
     },
   });
 
@@ -196,25 +227,201 @@ const animateProjects = () => {
   });
 };
 
-onMounted(fetchData);
+const animateProjectsMobile = () => {
+  projectCards.value.forEach((card) => {
+    gsap.fromTo(
+      card,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 90%",
+          toggleActions: "play none none none",
+        },
+      }
+    );
+  });
+};
+
+onMounted(() => {
+  console.log("Width Mobile:", widthMobile.value);
+
+  // Add resize listener
+  window.addEventListener('resize', handleResize);
+
+  // Fetch data and initialize animations
+  fetchData();
+
+  // Clean up
+  return () => {
+    window.removeEventListener('resize', handleResize);
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  };
+});
 </script>
 
-<style scopep>
+<style scoped>
 .horizontal .content {
   display: grid;
   place-items: center;
   flex-shrink: 0;
 }
 
+/* Ensure text gradient works */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 @media (max-width: 375px) {
+  /* Global structure changes */
+  #services {
+    display: block;
+    height: auto;
+    overflow-x: visible;
+    overflow-y: auto;
+  }
+
+  .horizontal {
+    display: block;
+  }
+
+  .horizontal .content {
+    display: block;
+    min-width: auto;
+    min-height: auto;
+    width: 100%;
+    height: auto;
+    transform: none !important; /* Prevent GSAP horizontal scrolling on mobile */
+  }
+
+  /* Hero section */
+  #hero {
+    padding: 2rem 1rem;
+    height: auto;
+    min-height: auto;
+  }
+
   #heroServices {
     flex-direction: column-reverse;
+    margin: 0;
+    border-width: 1px;
   }
+
   #heroServicesTitle {
+    width: 100%;
     font-size: 2rem;
+    padding: 1rem;
+    border-bottom: 1px solid #4B5563;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    margin-bottom: 0;
+    line-height: 1.2;
   }
+
   #heroServicesDesc {
-    font-size: 1.5rem;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border-right: none;
+    line-height: 1.5;
+  }
+
+  #heroServicesScroll {
+    display: none;
+  }
+
+  /* Project sections */
+  #projects {
+    padding: 2rem 1rem;
+    height: auto;
+    min-height: auto;
+    margin-bottom: 2rem;
+  }
+
+  #projectCard {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  #imgCard {
+    height: 200px;
+  }
+
+  #detailsCard {
+    padding: 1rem;
+  }
+
+  #detailsCard h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  #detailsCard p {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .framework {
+    margin-bottom: 1rem;
+  }
+
+  .framework h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .framework div span {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  #detailsCard button {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  #detailsCard button svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  /* CTA section */
+  #cta {
+    padding: 2rem 1rem;
+    height: auto;
+    min-height: auto;
+  }
+
+  #ctaContent {
+    padding: 1.5rem 1rem;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  #ctaContent h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  #ctaContent p {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  #ctaContent div {
+    gap: 0.5rem;
+  }
+
+  #ctaContent div button {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
   }
 }
 </style>

@@ -2,7 +2,7 @@
   <motion.div
 
     id="about"
-    class="min-h-screen flex flex-col items-center justify-center gap-5 bg-black p-4 md:p-14"
+    class="min-h-screen flex flex-col items-center justify-center gap-5 bg-black p-4"
   >
     <div
       class="flex flex-col md:flex-row items-center justify-center container mx-auto border border-gray-700 rounded-[10px]"

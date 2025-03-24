@@ -151,7 +151,7 @@
               <div class="flex space-x-4">
                 <a
                   href="#"
-                  class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
+                  class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
                 >
                   <svg
                     class="w-5 h-5"
@@ -168,7 +168,7 @@
                 </a>
                 <a
                   href="#"
-                  class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
+                  class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
                 >
                   <svg
                     class="w-5 h-5"
@@ -183,7 +183,7 @@
                 </a>
                 <a
                   href="#"
-                  class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
+                  class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
                 >
                   <svg
                     class="w-5 h-5"
@@ -200,7 +200,7 @@
                 </a>
                 <a
                   href="#"
-                  class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
+                  class="social-icon w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition-colors"
                 >
                   <svg
                     class="w-5 h-5"
@@ -253,12 +253,135 @@ const submitForm = () => {
 };
 </script>
 
-<style>
+<style scoped>
+/* Add scoped attribute to prevent style leakage */
 .bg-clip-text {
   -webkit-background-clip: text;
   background-clip: text;
 }
 .text-transparent {
   color: transparent;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .p-12 {
+    padding: 2rem;
+  }
+
+  .mb-20 {
+    margin-bottom: 3rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+
+  .py-3 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 375px) {
+  /* Use more specific selectors to prevent conflicts */
+  #contact .p-12 {
+    padding: 1.25rem;
+  }
+
+  #contact .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  #contact .text-2xl {
+    font-size: 1.125rem;
+  }
+
+  #contact .text-lg {
+    font-size: 0.875rem;
+  }
+
+  #contact .py-12 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  #contact .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  #contact .py-3 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  #contact .space-x-4 {
+    gap: 0.5rem;
+  }
+
+  /* Use class selectors for social icons to avoid conflicts */
+  #contact .social-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  #contact .social-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Icon sizes with more specific selectors */
+  #contact .h-6,
+  #contact .w-6 {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  #contact .rounded-xl {
+    border-radius: 0.5rem;
+  }
+
+  #contact .mb-8 {
+    margin-bottom: 1rem;
+  }
+
+  #contact .mb-6 {
+    margin-bottom: 0.75rem;
+  }
+
+  #contact .mb-4 {
+    margin-bottom: 0.5rem;
+  }
+
+  #contact .mb-2 {
+    margin-bottom: 0.25rem;
+  }
+
+  #contact .mt-12 {
+    margin-top: 1.5rem;
+  }
+
+  /* Fix email overflow */
+  #contact .text-gray-400 {
+    word-break: break-word;
+  }
+
+  /* Adjust social media icons container */
+  #contact .flex.space-x-4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 }
 </style>
