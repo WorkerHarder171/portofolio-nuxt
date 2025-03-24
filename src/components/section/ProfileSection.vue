@@ -26,7 +26,7 @@
           />
         </div>
         <p
-          class="text-3xl capitalize text-white font-semibold tracking-wide text-center my-5 p-3 rounded-[10px] border border-gray-700 w-auto mx-auto"
+          class="text-3xl capitalize text-white font-semibold tracking-wide text-center my-5 p-3 rounded-[10px] border border-gray-700 max-w-sm mx-auto"
         >
           hi i'm dady bima
         </p>
