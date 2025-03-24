@@ -26,6 +26,7 @@
             alt="Mountain"
           />
         </div>
+        <p class="text-3xl capitalize text-white font-semibold tracking-wide text-center my-5 p-3 rounded-[10px] border border-gray-700 w-98 mx-auto">hi i'm dady bima</p>
       </div>
 
       <!-- Content Section - Full width on mobile, half width on desktop -->
