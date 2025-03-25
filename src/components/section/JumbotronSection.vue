@@ -13,6 +13,7 @@
     </div>
 
     <div
+      ref="marqueeRef"
       class="marquee-container py-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 mb-12 relative z-10"
     >
       <div class="marquee-content">
@@ -23,12 +24,7 @@
     </div>
 
     <div class="container mx-auto px-4 text-center relative z-10">
-      <h1
-      ref="titleRef"
-        :initial="{ opacity: 0, y: 20 }"
-        :animate="{ opacity: 1, y: 0 }"
-        class="text-5xl md:text-7xl font-bold mb-6"
-      >
+      <h1 ref="titleRef" class="text-5xl md:text-7xl font-bold mb-6">
         <span
           class="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent"
         >
@@ -36,7 +32,10 @@
         </span>
       </h1>
 
-      <div class="h-16 md:h-20 flex items-center justify-center mb-8">
+      <div
+        ref="subtitleRef"
+        class="h-16 md:h-20 flex items-center justify-center mb-8"
+      >
         <h2 class="text-2xl md:text-4xl font-medium">
           <span>I'm a </span>
           <span class="typing-text">{{ displayText }}</span>
@@ -44,18 +43,25 @@
         </h2>
       </div>
 
-      <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+      <p
+        ref="descriptionRef"
+        class="text-xl text-gray-400 max-w-2xl mx-auto mb-10"
+      >
         Bringing your digital ideas to life with creative design and
         cutting-edge technology. Let's build something amazing together.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <div
+        ref="buttonRef"
+        class="flex flex-col sm:flex-row gap-4 justify-center"
+      >
         <button
           class="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-md font-medium transition-colors"
         >
           Explore My Work
         </button>
         <button
+          ref="buttonRefs"
           class="px-8 py-3 border border-white/20 hover:bg-white/10 rounded-md font-medium transition-colors"
         >
           Contact Me
@@ -108,8 +114,13 @@ const currentTextIndex = ref(0);
 const currentCharIndex = ref(0);
 const isDeleting = ref(false);
 const typingSpeed = ref(100);
-const titleRef = ref();
 let typingTimer = null;
+
+const marqueeRef = ref();
+const titleRef = ref();
+const subtitleRef = ref(null);
+const descriptionRef = ref(null);
+const buttonRef = ref(null);
 
 const typeText = () => {
   const currentText = textOptions[currentTextIndex.value];
@@ -137,12 +148,36 @@ const typeText = () => {
 };
 
 onMounted(() => {
-  typingTimer = setTimeout(typeText, 1000);
+  typeText();
+
+  gsap.fromTo(
+    marqueeRef.value,
+    { opacity: 0, y: 50, scale: 0.5 },
+    { opacity: 1, y: 0, scale: 1, duration: 2, ease: "power2.out" }
+  );
 
   gsap.fromTo(
     titleRef.value,
-    { opacity: 0, y: 60 },
-    { opacity: 1, y: 0, duration: 1 }
+    { opacity: 0, y: 50 },
+    { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
+  );
+
+  gsap.fromTo(
+    subtitleRef.value,
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 0.5 }
+  );
+
+  gsap.fromTo(
+    descriptionRef.value,
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 1 }
+  );
+
+  gsap.fromTo(
+    buttonRef.value,
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 1, ease: "power2.out", delay: 1.5 }
   );
 });
 
