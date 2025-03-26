@@ -56,8 +56,8 @@ onUnmounted(() => {
   <nav
     id="navbar"
     :class="[
-      'fixed top-0 text-gray-400 w-full shadow-none z-50  flex items-center justify-between px-8 py-6 transition-all duration-300',
-      isScrolled ? '' : 'bg-transparent',
+      'fixed top-0 text-gray-400 w-full shadow-none z-50 flex items-center justify-between px-8 py-6 transition-all duration-300 ease-in-out',
+      isScrolled ? 'bg-black' : 'bg-transparent',
     ]"
   >
     <div class="nav-header">
@@ -92,7 +92,7 @@ onUnmounted(() => {
     <button
       v-if="isScrolled && !isSideMenuOpen"
       @click="toggleSideMenu"
-      class="hamburger-menu bg-black/90 rounded-[10px] cursor-pointer flex flex-col justify-center items-center w-10 h-10 relative focus:outline-none"
+      class="hamburger-menu bg-gray-900 rounded-[10px] cursor-pointer flex flex-col justify-center items-center w-10 h-10 relative focus:outline-none transition-all duration-300 ease-in-out"
       aria-label="Menu"
     >
       <span class="w-6 h-0.5 bg-white mb-1.5 transition-all"></span>

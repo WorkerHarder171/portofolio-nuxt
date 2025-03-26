@@ -1,7 +1,7 @@
 <template>
   <div id="contact" class="min-h-screen flex justify-center items-center bg-black text-white">
     <!-- Contact Section -->
-    <section class="container mx-auto px-4 py-12 mb-20">
+    <section ref="sectionRef" class="container mx-auto px-4 py-12 mb-20">
       <div
         class="bg-gray-900/60 rounded-xl overflow-hidden border-2 border-gray-700"
       >
@@ -226,6 +226,66 @@
 
 <script setup>
 import { ref, reactive } from "vue";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const sectionRef = ref(null);
+
+onMounted(() => {
+  const section = sectionRef.value;
+
+  // Set nilai awal sebelum animasi
+  gsap.set(section, { opacity: 0, y: 50 });
+
+  // Buat animasi ScrollTrigger
+  ScrollTrigger.create({
+    trigger: section,
+    start: "top 80%",
+    end: "bottom 20%",
+    toggleActions: "play reverse play reverse",
+    onEnter: () => {
+      gsap.to(section, {
+        opacity: 1,
+        y: 50,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+    },
+    onLeave: () => {
+      gsap.to(section, {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.in",
+      });
+    },
+    onEnterBack: () => {
+      gsap.to(section, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+    },
+    onLeaveBack: () => {
+      gsap.to(section, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        ease: "power2.in",
+      });
+    }
+  });
+});
+
+// Bersihkan ScrollTrigger saat komponen di-unmount
+onUnmounted(() => {
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+});
+
 
 const form = reactive({
   name: "",

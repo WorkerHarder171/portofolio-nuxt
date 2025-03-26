@@ -45,17 +45,17 @@
       v-for="(project, index) in data"
       :key="index"
       ref="projectCards"
-      class="content container mx-auto px-4 py-16 min-w-screen min-h-screen flex items-center"
+      class="content container mx-auto px-4 py-16 min-w-screen min-h-screen flex items-center project-section"
     >
       <div class="container mx-auto">
         <div
-          class="bg-gray-900/60 border border-gray-700 rounded-xl overflow-hidden"
+          class="bg-gray-900/60 border border-gray-700 rounded-xl overflow-hidden project-card"
         >
           <div id="projectCard" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Project Image -->
             <div
               id="imgCard"
-              class="relative h-[300px] lg:h-[500px] overflow-hidden"
+              class="relative h-[300px] lg:h-[500px] overflow-hidden project-image"
             >
               <img
                 v-if="project.img"
@@ -73,12 +73,17 @@
             </div>
 
             <!-- Project Details -->
-            <div id="detailsCard" class="p-8 flex flex-col justify-center">
-              <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <div
+              id="detailsCard"
+              class="p-8 flex flex-col justify-center project-details"
+            >
+              <h2 class="text-3xl md:text-4xl font-bold mb-4 project-title">
                 {{ project.title }}
               </h2>
-              <p class="text-gray-300 text-lg mb-6">{{ project.desc }}</p>
-              <div class="mb-8 framework">
+              <p class="text-gray-300 text-lg mb-6 project-desc">
+                {{ project.desc }}
+              </p>
+              <div class="mb-8 framework project-tech">
                 <h3 class="text-xl font-semibold mb-3">Technologies Used:</h3>
                 <div class="flex flex-wrap gap-3">
                   <span
@@ -90,7 +95,7 @@
                 </div>
               </div>
               <button
-                class="w-fit px-4 py-2 border cursor-pointer border-white/20 rounded-md hover:bg-white/10 flex items-center group"
+                class="w-fit px-4 py-2 border cursor-pointer border-white/20 rounded-md hover:bg-white/10 flex items-center group project-button"
               >
                 View Project Details
                 <svg
@@ -124,21 +129,21 @@
           id="ctaContent"
           class="bg-gradient-to-r from-blue-900/50 to-purple-900/50 p-12 rounded-2xl text-center border-2 border-gray-700"
         >
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 cta-title">
             Ready to start your project?
           </h2>
-          <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto cta-desc">
             Let's create something amazing together. Contact us today to discuss
             your ideas.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              class="px-6 py-3 rounded-md bg-white text-black hover:bg-gray-200 font-medium"
+              class="px-6 py-3 rounded-md bg-white text-black hover:bg-gray-200 font-medium cta-button"
             >
               Get a Free Quote
             </button>
             <button
-              class="px-6 py-3 rounded-md border border-white text-white hover:bg-white/10 font-medium"
+              class="px-6 py-3 rounded-md border border-white text-white hover:bg-white/10 font-medium cta-button"
             >
               View Our Process
             </button>
@@ -168,9 +173,15 @@ const handleResize = () => {
   widthMobile.value = window.innerWidth;
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
   if (widthMobile.value > 500) {
-    nextTick(() => animateProjects());
+    nextTick(() => {
+      animateProjects();
+      enhanceProjectAnimations();
+    });
   } else {
-    nextTick(() => animateProjectsMobile());
+    nextTick(() => {
+      animateProjectsMobile();
+      enhanceProjectAnimations();
+    });
   }
 };
 
@@ -186,25 +197,6 @@ const animateProjects = () => {
       end: () =>
         "+=" + (document.querySelector(".horizontal")?.offsetWidth || 0),
     },
-  });
-
-  projectCards.value.forEach((card, index) => {
-    gsap.fromTo(
-      card,
-      { opacity: 0, x: 100 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        delay: 0.2 * index,
-      }
-    );
   });
 };
 
@@ -229,14 +221,275 @@ const animateProjectsMobile = () => {
   });
 };
 
+// Enhanced animations with dramatic scale effects
+const enhanceProjectAnimations = () => {
+  // Hero section animations with scale
+  const heroTitle = document.querySelector("#heroServicesTitle");
+  const heroDesc = document.querySelector("#heroServicesDesc");
+  const heroScroll = document.querySelector("#heroServicesScroll");
+
+  // Initial state
+  gsap.set([heroTitle, heroDesc], {
+    opacity: 0,
+    scale: 0.8,
+    transformOrigin: "center",
+  });
+  gsap.set(heroScroll, { opacity: 0, y: 30 });
+
+  // Animation timeline
+  const heroTl = gsap.timeline();
+
+  heroTl
+    .to(heroTitle, {
+      opacity: 1,
+      scale: 1,
+      duration: 1.2,
+      ease: "back.out(1.7)",
+    })
+    .to(
+      heroDesc,
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1.2,
+        ease: "back.out(1.7)",
+      },
+      "-=0.8"
+    )
+    .to(
+      heroScroll,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      },
+      "-=0.5"
+    );
+
+  // Subtle floating animation for scroll text
+  gsap.to(heroScroll, {
+    y: 10,
+    duration: 1.5,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+  });
+
+  // Enhanced project card animations with more dramatic scale effects
+  document.querySelectorAll(".project-section").forEach((section) => {
+    const card = section.querySelector(".project-card");
+    const imgCard = section.querySelector(".project-image");
+    const title = section.querySelector(".project-title");
+    const desc = section.querySelector(".project-desc");
+    const tech = section.querySelector(".project-tech");
+    const button = section.querySelector(".project-button");
+
+    // Set initial states with more dramatic scale
+    gsap.set(card, { scale: 0.85, transformOrigin: "center" });
+    gsap.set(imgCard, { scale: 0.9, transformOrigin: "center" });
+    gsap.set([title, desc, tech, button], {
+      scale: 0.9,
+      y: 40,
+      opacity: 0,
+      transformOrigin: "left",
+    });
+
+    // Create ScrollTrigger for enhanced animations
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 70%",
+      end: "bottom 20%",
+      onEnter: () => {
+        // Scale up animation for the card with bounce effect
+        gsap.to(card, {
+          scale: 1,
+          duration: 1,
+          ease: "back.out(1.7)",
+        });
+
+        // Scale up animation for the image with slight delay
+        gsap.to(imgCard, {
+          scale: 1,
+          duration: 0.8,
+          delay: 0.1,
+          ease: "back.out(1.7)",
+        });
+
+        // Scale up animation for text elements with stagger
+        gsap.to([title, desc, tech, button], {
+          scale: 1,
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: "back.out(1.2)",
+        });
+      },
+      onLeave: () => {
+        // More noticeable scale down when scrolling past
+        gsap.to(card, {
+          scale: 0.92,
+          duration: 0.5,
+          ease: "power2.in",
+        });
+
+        gsap.to(imgCard, {
+          scale: 0.95,
+          duration: 0.4,
+          ease: "power2.in",
+        });
+
+        gsap.to([title, desc, tech, button], {
+          scale: 0.95,
+          y: 10,
+          opacity: 0.7,
+          duration: 0.3,
+          stagger: 0.05,
+          ease: "power2.in",
+        });
+      },
+      onEnterBack: () => {
+        // Scale back up when scrolling back
+        gsap.to(card, {
+          scale: 1,
+          duration: 0.7,
+          ease: "back.out(1.7)",
+        });
+
+        gsap.to(imgCard, {
+          scale: 1,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+        });
+
+        gsap.to([title, desc, tech, button], {
+          scale: 1,
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "back.out(1.2)",
+        });
+      },
+      onLeaveBack: () => {
+        // More dramatic scale down when scrolling back past
+        gsap.to(card, {
+          scale: 0.85,
+          duration: 0.5,
+          ease: "power2.in",
+        });
+
+        gsap.to(imgCard, {
+          scale: 0.9,
+          duration: 0.4,
+          ease: "power2.in",
+        });
+
+        gsap.to([title, desc, tech, button], {
+          scale: 0.9,
+          y: 40,
+          opacity: 0,
+          duration: 0.3,
+          stagger: 0.05,
+          ease: "power2.in",
+        });
+      },
+    });
+  });
+
+  // CTA section animations with more dramatic scale effects
+  const ctaSection = document.querySelector("#cta");
+  const ctaContent = document.querySelector("#ctaContent");
+  const ctaTitle = ctaContent?.querySelector(".cta-title");
+  const ctaDesc = ctaContent?.querySelector(".cta-desc");
+  const ctaButtons = ctaContent?.querySelectorAll(".cta-button");
+
+  // Set initial states with more dramatic scale
+  gsap.set(ctaContent, { opacity: 0, scale: 0.8, transformOrigin: "center" });
+  gsap.set([ctaTitle, ctaDesc], {
+    opacity: 0,
+    y: 50,
+    scale: 0.9,
+    transformOrigin: "center",
+  });
+  gsap.set(ctaButtons, {
+    opacity: 0,
+    y: 30,
+    scale: 0.8,
+    transformOrigin: "center",
+  });
+
+  ScrollTrigger.create({
+    trigger: ctaSection,
+    start: "top 70%",
+    onEnter: () => {
+      // Scale up animation for the container with more bounce
+      gsap.to(ctaContent, {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: "back.out(1.7)",
+      });
+
+      // Scale up animation for text elements
+      gsap.to([ctaTitle, ctaDesc], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "back.out(1.4)",
+        delay: 0.3,
+      });
+
+      // Scale up animation for buttons with more bounce
+      gsap.to(ctaButtons, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: "back.out(2.0)",
+        delay: 0.7,
+      });
+    },
+    onLeave: () => {
+      // Scale down when scrolling past
+      gsap.to(ctaContent, {
+        scale: 0.95,
+        opacity: 0.8,
+        duration: 0.5,
+        ease: "power2.in",
+      });
+    },
+    onEnterBack: () => {
+      // Scale back up when scrolling back
+      gsap.to(ctaContent, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.7,
+        ease: "back.out(1.7)",
+      });
+    },
+  });
+};
+
 // mounting
 onMounted(() => {
   window.addEventListener("resize", handleResize);
-  if (widthMobile.value > 500) {
-    animateProjects();
-  } else {
-    animateProjectsMobile();
-  }
+
+  // Wait for DOM to be fully ready
+  setTimeout(() => {
+    if (widthMobile.value > 500) {
+      animateProjects();
+    } else {
+      animateProjectsMobile();
+    }
+
+    // Add enhanced animations
+    enhanceProjectAnimations();
+  }, 200);
 });
 
 // cleanup
@@ -257,6 +510,18 @@ onUnmounted(() => {
 .bg-clip-text {
   -webkit-background-clip: text;
   background-clip: text;
+}
+
+/* Add transform-style for better 3D effect */
+.project-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  perspective: 1000px;
+}
+
+.project-image img {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 @media (max-width: 500px) {
