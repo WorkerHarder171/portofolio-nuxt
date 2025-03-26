@@ -225,7 +225,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, onUnmounted } from "vue";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -234,30 +234,42 @@ if (typeof window !== "undefined") {
 }
 
 const sectionRef = ref(null);
+const form = reactive({
+  name: "",
+  email: "",
+  service: "",
+  message: "",
+});
+const isSubmitting = ref(false);
+const showSuccess = ref(false);
 
 onMounted(() => {
   const section = sectionRef.value;
 
-  // Set nilai awal sebelum animasi
-  gsap.set(section, { opacity: 0, y: 50 });
+  gsap.set(section, {
+    opacity: 0,
+    y: 100,
+    scale: 0.9,
+    transformOrigin: "center"
+  });
 
-  // Buat animasi ScrollTrigger
   ScrollTrigger.create({
     trigger: section,
     start: "top 80%",
     end: "bottom 20%",
-    toggleActions: "play reverse play reverse",
     onEnter: () => {
       gsap.to(section, {
         opacity: 1,
-        y: 50,
-        duration: 0.8,
-        ease: "power2.out",
+        y: 0,
+        scale: 1,
+        duration: 1,
+        ease: "back.out(1.2)",
       });
     },
     onLeave: () => {
       gsap.to(section, {
-        opacity: 0,
+        opacity: 0.7,
+        scale: 0.98,
         duration: 0.8,
         ease: "power2.in",
       });
@@ -266,14 +278,16 @@ onMounted(() => {
       gsap.to(section, {
         opacity: 1,
         y: 0,
+        scale: 1,
         duration: 0.8,
-        ease: "power2.out",
+        ease: "back.out(1.2)",
       });
     },
     onLeaveBack: () => {
       gsap.to(section, {
         opacity: 0,
-        y: 50,
+        y: 100,
+        scale: 0.9,
         duration: 0.8,
         ease: "power2.in",
       });
@@ -281,21 +295,9 @@ onMounted(() => {
   });
 });
 
-// Bersihkan ScrollTrigger saat komponen di-unmount
 onUnmounted(() => {
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 });
-
-
-const form = reactive({
-  name: "",
-  email: "",
-  service: "",
-  message: "",
-});
-
-const isSubmitting = ref(false);
-const showSuccess = ref(false);
 
 const submitForm = () => {
   isSubmitting.value = true;
@@ -314,7 +316,6 @@ const submitForm = () => {
 </script>
 
 <style scoped>
-/* Add scoped attribute to prevent style leakage */
 .bg-clip-text {
   -webkit-background-clip: text;
   background-clip: text;
