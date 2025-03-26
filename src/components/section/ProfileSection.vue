@@ -295,7 +295,6 @@ onMounted(() => {
       trigger: section,
       start: "top 80%",
       end: "bottom 20%",
-      markers: true,
       toggleActions: "play reverse play reverse",
       onEnter: () => {
         gsap.to(section, {

@@ -1,15 +1,15 @@
 <template>
-  <div id="contact" class="min-h-screen flex justify-center items-center bg-black text-white">
+  <div id="contact" class="min-h-screen flex justify-center items-center bg-black text-white relative">
     <!-- Contact Section -->
-    <section ref="sectionRef" class="container mx-auto px-4 py-12 mb-20">
+    <section class="container  mx-auto px-4 py-12 mb-20">
       <div
-        class="bg-gray-900/60 rounded-xl overflow-hidden border-2 border-gray-700"
+        class="bg-gray-900/60 rounded-xl contact-section overflow-hidden border-2 border-gray-700"
       >
         <div class="grid grid-cols-2 gap-0">
           <!-- Contact Form -->
           <div class="p-12">
             <h2 class="text-2xl font-bold mb-6">Send Me a Message</h2>
-            <form @submit.prevent="submitForm" class="space-y-6">
+            <form class="space-y-6" @submit.prevent="submitForm">
               <div>
                 <label for="name" class="block text-sm font-medium mb-2"
                   >Your Name</label
@@ -50,7 +50,7 @@
                   <option value="web-development">Web Development</option>
                   <option value="mobile-app">Mobile App Development</option>
                   <option value="ui-ux">UI/UX Design</option>
-                  <option value="ecommerce">E-commerce Solutions</option>
+                  <option value="e-commerce">E-commerce Solutions</option>
                   <option value="digital-marketing">Digital Marketing</option>
                   <option value="other">Other</option>
                 </select>
@@ -225,7 +225,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from "vue";
+import { ref, reactive } from "vue";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -233,7 +233,6 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const sectionRef = ref(null);
 const form = reactive({
   name: "",
   email: "",
@@ -242,62 +241,6 @@ const form = reactive({
 });
 const isSubmitting = ref(false);
 const showSuccess = ref(false);
-
-onMounted(() => {
-  const section = sectionRef.value;
-
-  gsap.set(section, {
-    opacity: 0,
-    y: 100,
-    scale: 0.9,
-    transformOrigin: "center"
-  });
-
-  ScrollTrigger.create({
-    trigger: section,
-    start: "top 80%",
-    end: "bottom 20%",
-    onEnter: () => {
-      gsap.to(section, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1,
-        ease: "back.out(1.2)",
-      });
-    },
-    onLeave: () => {
-      gsap.to(section, {
-        opacity: 0.7,
-        scale: 0.98,
-        duration: 0.8,
-        ease: "power2.in",
-      });
-    },
-    onEnterBack: () => {
-      gsap.to(section, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: "back.out(1.2)",
-      });
-    },
-    onLeaveBack: () => {
-      gsap.to(section, {
-        opacity: 0,
-        y: 100,
-        scale: 0.9,
-        duration: 0.8,
-        ease: "power2.in",
-      });
-    }
-  });
-});
-
-onUnmounted(() => {
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-});
 
 const submitForm = () => {
   isSubmitting.value = true;
