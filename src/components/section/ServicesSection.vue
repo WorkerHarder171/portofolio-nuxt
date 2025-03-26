@@ -198,25 +198,6 @@ const animateProjects = () => {
         "+=" + (document.querySelector(".horizontal")?.offsetWidth || 0),
     },
   });
-
-  projectCards.value.forEach((card, index) => {
-    gsap.fromTo(
-      card,
-      { opacity: 0, x: 100 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          toggleActions: "play none none none",
-        },
-        delay: 0.2 * index,
-      }
-    );
-  });
 };
 
 // animated mobile
